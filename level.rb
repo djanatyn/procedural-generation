@@ -25,8 +25,23 @@ class Level
       print "\n"
     end
   end
+
+  def add_square topx, topy, length
+    (topx..topx+length).each do |x|
+      (topy..topy+length).each do |y|
+        @cells[x][y] = { tile: '.', objects: [] }
+      end
+    end
+  end
+
+  def rand_square
+    topx = rand (1..@width-1)
+    topy = rand (1..@height-1)
+
+  end
 end
 
 # test making a new level
 level = Level.new(80,24)
+level.add_square(5,5,5)
 level.display
