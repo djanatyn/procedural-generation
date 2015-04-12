@@ -4,21 +4,21 @@ class Level
   attr_reader :cells
   attr_writer :entities
 
-  def initialize(height, width)
+  def initialize(width, height)
     @width = width
     @height = height
     @cells = []; @entities = []
 
     # build up an empty array of cells
-    (0..@width-1).each do |column|
+    (0..@height-1).each do |column|
       empty_tile = { tile: '#', objects: [] }
       @cells[column] ||= []
-      @cells[column] = [empty_tile] * height
+      @cells[column] = [empty_tile] * @width
     end
   end
 
   def display
-    (0..@width-1).each do |col|
+    (0..@height-1).each do |col|
       @cells[col].each do |tile|
         print tile[:tile]
       end
@@ -34,14 +34,22 @@ class Level
     end
   end
 
-  def rand_square
+  def rand_square length
     topx = rand (1..@width-1)
     topy = rand (1..@height-1)
 
+    self.add_square(topx,topy,length)
+  end
+
+  def valid? x,y
+    not (@cells[x].nil? || @cells[x][y].nil?)
+  end
+
+  def wall? x,y
+    self.valid?(x,y) and @cells[x][y][:tile] == '#'
   end
 end
 
 # test making a new level
-level = Level.new(80,24)
-level.add_square(5,5,5)
+level = Level.new 80, 24
 level.display
